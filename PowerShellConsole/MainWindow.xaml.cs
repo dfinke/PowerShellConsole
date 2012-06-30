@@ -41,14 +41,17 @@ namespace PowerShellConsole
                 var h = new Hashtable();
                 //h["RelativeFilePaths"] = true;
 
-                var records = CommandCompletion.CompleteInput(textEditor.Text, textEditor.TextArea.Caret.Offset, null, ps).CompletionMatches;
+                var completedInput = CommandCompletion.CompleteInput(textEditor.Text, textEditor.TextArea.Caret.Offset, null, ps);
+
+                var records = completedInput.CompletionMatches;
 
                 (from record in records
                  select new CompletionData
                  {
                      CompletionText = record.CompletionText,
                      ToolTip = record.ToolTip,
-                     Resultype = record.ResultType
+                     Resultype = record.ResultType,
+                     ReplacementLength = completedInput.ReplacementLength
                  })
                  .ToList()
                  .ForEach(i => data.Add(i));

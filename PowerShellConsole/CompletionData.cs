@@ -12,11 +12,12 @@ namespace PowerShellConsole
         public string ToolTip { get; set; }
         public string CompletionText { get; set; }
         public CompletionResultType Resultype { get; set; }
+        public int ReplacementLength { get; set; }
 
         public ImageSource Image
         {
             get
-            {                
+            {
                 switch (Resultype)
                 {
                     case CompletionResultType.Command:
@@ -74,7 +75,9 @@ namespace PowerShellConsole
 
         public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
         {
-            textArea.Document.Replace(completionSegment, this.Text);
+            var offset = completionSegment.Offset - ReplacementLength;
+            textArea.Document.Replace(offset, ReplacementLength, this.Text);
         }
+
     }
 }
