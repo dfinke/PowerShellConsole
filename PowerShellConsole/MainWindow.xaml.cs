@@ -53,7 +53,10 @@ namespace PowerShellConsole
                  .ToList()
                  .ForEach(i => data.Add(i));
 
-                completionWindow.Show();
+                if (data.Count > 0)
+                {
+                    completionWindow.Show();
+                }
             }
         }
     }
