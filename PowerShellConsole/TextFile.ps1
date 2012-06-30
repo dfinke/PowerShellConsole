@@ -6,3 +6,11 @@ $b = 'aasdf';
 $c = "aasdf"; 
 
 Get-Content 
+
+switch ('asdf') {
+    default {}
+}
+
+
+foreach ($a in $x) {
+}
