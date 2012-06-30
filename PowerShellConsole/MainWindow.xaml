@@ -7,8 +7,8 @@
     <Grid>
         <avalonEdit:TextEditor
 				Name="textEditor"
-				FontFamily="Consolas"
-				FontSize="10pt"
+				FontFamily="Lucida Console"
+				FontSize="11"
 				SyntaxHighlighting="PowerShell"/>
     </Grid>
 </Window>
