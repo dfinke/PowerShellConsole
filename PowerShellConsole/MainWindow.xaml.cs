@@ -26,13 +26,8 @@ namespace PowerShellConsole
             textEditor.Focus();
             textEditor.TextArea.TextEntered += new TextCompositionEventHandler(TextArea_TextEntered);
             textEditor.ShowLineNumbers = true;
-
-            textEditor.Text = @"
-function test-this ($p) {
-}
-
-$x -ne 1
-            ";
+            
+            textEditor.Load("TextFile.ps1");
 
             using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerShellConsole.PowerShell.xshd"))
             {
