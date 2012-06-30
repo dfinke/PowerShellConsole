@@ -37,20 +37,18 @@ namespace PowerShellConsole
                 };
 
                 var data = completionWindow.CompletionList.CompletionData;
-                
-                var caretPosition = textEditor.TextArea.Caret.Offset - 1;
-                
-                var h = new Hashtable();
 
+                var h = new Hashtable();
                 //h["RelativeFilePaths"] = true;
 
-                var records = CommandCompletion.CompleteInput(textEditor.Text, caretPosition, h, ps).CompletionMatches;
-                
+                var records = CommandCompletion.CompleteInput(textEditor.Text, textEditor.TextArea.Caret.Offset, null, ps).CompletionMatches;
+
                 (from record in records
-                 select new MyCompletionData
+                 select new CompletionData
                  {
                      CompletionText = record.CompletionText,
-                     ToolTip = record.ToolTip
+                     ToolTip = record.ToolTip,
+                     Resultype = record.ResultType
                  })
                  .ToList()
                  .ForEach(i => data.Add(i));
