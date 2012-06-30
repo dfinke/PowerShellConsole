@@ -1,9 +1,14 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Management.Automation;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace PowerShellConsole
 {
@@ -20,6 +25,26 @@ namespace PowerShellConsole
 
             textEditor.Focus();
             textEditor.TextArea.TextEntered += new TextCompositionEventHandler(TextArea_TextEntered);
+            textEditor.ShowLineNumbers = true;
+
+            textEditor.Text = @"
+function test-this ($p) {
+}
+
+$x -ne 1
+            ";
+
+            using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerShellConsole.PowerShell.xshd"))
+            {
+                if (s != null)
+                {
+                    using (XmlTextReader reader = new XmlTextReader(s))
+                    {
+                        textEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                    }
+
+                }
+            }
             ps = PowerShell.Create();
         }
 
