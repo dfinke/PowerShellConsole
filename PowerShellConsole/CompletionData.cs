@@ -75,9 +75,14 @@ namespace PowerShellConsole
 
         public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
         {
+            var length = textArea.Caret.Offset;
             var offset = completionSegment.Offset - ReplacementLength;
-            textArea.Document.Replace(offset, ReplacementLength, this.Text);
-        }
 
+            length = offset == 0 ? 
+                length : 
+                length - completionSegment.Offset + ReplacementLength;
+
+            textArea.Document.Replace(offset, length, this.Text);
+        }
     }
 }
