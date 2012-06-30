@@ -1,165 +1,146 @@
-<?xml version="1.0"?>
-<SyntaxDefinition name="powershell" extensions=".ps1;psm1" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-	<!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
-	<Color name="Comment" foreground="Green"/>
-	<Color name="String" foreground="Blue"/>
-	<Color name="Char" foreground="Magenta"/>
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="PowerShell" extensions=".ps1;.psm1;.psd1" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" foreground="#FF006400" exampleText="// comment" />
+	<Color name="String" foreground="#FF8B0000" exampleText="string text = &quot;Hello, World!&quot;"/>
+	<Color name="Char" foreground="#FF8B0000" exampleText="char linefeed = '\n';"/>
+	<Color name="Punctuation" foreground="#FF000000" exampleText="a(b.c);" />
+	<Color name="NumberLiteral" foreground="#FF800080" exampleText="3.1415f"/>
+	<Color name="Keywords"  foreground="#FF00008B" exampleText="if (a)"/>
+	<Color name="Variable" foreground="#FFFF4500" exampleText="$param = 1" />
+	<Color name="ExceptionKeywords" fontWeight="bold" foreground="Teal" />
+	<Color name="GotoKeywords" foreground="Navy" />
+	<Color name="ReferenceTypes" foreground="#FF008080" />
+	<Color name="Command" foreground="#FF0000FF" />
+	<Color name="Operators" foreground="#FFA9A9A9" exampleText="-eq"/>
 	
-	<RuleSet name="CommentMarkerSet">
-		<Keywords fontWeight="bold" foreground="Red">
-			<Word>TODO</Word>
-			<Word>FIXME</Word>
-		</Keywords>
-		<Keywords fontWeight="bold" foreground="#E0E000">
-			<Word>HACK</Word>
-			<Word>UNDONE</Word>
-		</Keywords>
-	</RuleSet>
-	
-	<!-- This is the main ruleset. -->
-	<RuleSet>
-
-    <Span color="Comment" ruleSet="CommentMarkerSet" multiline="true">
-      <Begin>\#&lt;</Begin>
-      <End>\#\&gt;</End>
-    </Span>
-
-    <Span color="Comment" ruleSet="CommentMarkerSet">
+	<RuleSet ignoreCase="true">
+		<Span color="Comment">
 			<Begin>\#</Begin>
 		</Span>
-
-    <Span color="String" multiline="true">
-      <Begin>@\""</Begin>
-      <End>\"@</End>
-
-    </Span>
-
-    <Span color="String">
-			<Begin>\"</Begin>
-			<End>\"</End>
+		
+		<Span color="Comment" multiline="true">
+			<Begin>&lt;\#</Begin>
+			<End>\#&gt;</End>
+		</Span>
+		
+		<Span color="String">
+			<Begin>"</Begin>
+			<End>"</End>
 			<RuleSet>
 				<!-- span for escape sequences -->
-				<!--Span begin="\"" end="\""/ -->
+				<Span begin="\\" end="."/>
 			</RuleSet>
 		</Span>
-		<Span color="String">
+		
+		<Span color="Char">
 			<Begin>'</Begin>
 			<End>'</End>
 			<RuleSet>
 				<!-- span for escape sequences -->
-				<Span begin="'" end="'"/>
+				<Span begin="\\" end="."/>
 			</RuleSet>
 		</Span>
 		
-
-		
-		
-		<Span>
-			<Begin>-</Begin>
-			<RuleSet name="Operators">
-		<Keywords foreground="Gray" fontWeight="bold">
-			<Word>eq</Word>
-			<Word>ne</Word>
-			<Word>ge</Word>
-			<Word>gt</Word>
-			<Word>lt</Word>
-			<Word>le</Word>
-			<Word>like</Word>
-			<Word>notlike</Word>
-			<Word>match</Word>
-			<Word>replace</Word>
-			<Word>contains</Word>
-			<Word>notcontains</Word>
-			<Word>ieq</Word>
-			<Word>ine</Word>
-			<Word>ige</Word>
-			<Word>igt</Word>
-			<Word>ilt</Word>
-			<Word>ile</Word>
-			<Word>ilike</Word>
-			<Word>inotlike</Word>
-			<Word>imatch</Word>
-			<Word>ireplace</Word>
-			<Word>icontains</Word>
-			<Word>inotcontains</Word>
-			<Word>ceq</Word>
-			<Word>cne</Word>
-			<Word>cge</Word>
-			<Word>cgt</Word>
-			<Word>clt</Word>
-			<Word>cle</Word>
-			<Word>clike</Word>
-			<Word>cnotlike</Word>
-			<Word>cmatch</Word>
-			<Word>creplace</Word>
-			<Word>ccontains</Word>
-			<Word>cnotcontains</Word>
-			<Word>is</Word>
-			<Word>isnot</Word>
-			<Word>not</Word>
-			<Word>and</Word>
-			<Word>or</Word>
-			<Word>as</Word>
-			<Word>band</Word>
-      <Word>bor</Word>
-      <Word>bxor</Word>
-      <Word>f</Word>
-			<Word>split</Word>
-		</Keywords>
-		</RuleSet>
+		<Span color="String" multiline="true">
+			<Begin color="String">@"</Begin>
+			<End>"@</End>
+			<RuleSet>
+				<!-- span for escape sequences -->
+				<Span begin='""' end=""/>
+			</RuleSet>
 		</Span>
-	
-		<Keywords fontWeight="bold" foreground="Blue">
-			<Word>Begin</Word>
-			<Word>Break</Word>
-			<Word>Catch</Word>
-			<Word>Continue</Word>
-			<Word>Data</Word>
-			<Word>Do</Word>
-			<Word>Dynamicparam</Word>
-			<Word>Else</Word>
-			<Word>Elseif</Word>
-			<Word>End</Word>
-			<Word>Exit</Word>
-			<Word>Filter</Word>
-			<Word>Finally</Word>
-			<Word>For</Word>
-			<Word>Foreach</Word>
-			<Word>From</Word>
-			<Word>Function</Word>
-			<Word>If</Word>
-			<Word>In</Word>
-			<Word>Param</Word>
-			<Word>Process</Word>
-			<Word>Return</Word>
-			<Word>Switch</Word>
-			<Word>Throw</Word>
-			<Word>Trap</Word>
-			<Word>Try</Word>
-			<Word>Until</Word>
-			<Word>While</Word>
-			<Word>global</Word>
-			<Word>local</Word>
-			<Word>private</Word>
-			<Word>script</Word>
+				
+		<Keywords color="Keywords">
+			<Word>while</Word>
+			<Word>param</Word>
+			<Word>end</Word>
+			<Word>define</Word>
+			<Word>else</Word>
+			<Word>from</Word>
+			<Word>foreach</Word>
+			<Word>var</Word>
+			<Word>dynamicparam</Word>
+			<Word>filter</Word>
+			<Word>dp</Word>
+			<Word>until</Word>
+			<Word>for</Word>
+			<Word>exit</Word>
+			<Word>switch</Word>
+			<Word>process</Word>
+			<Word>begin</Word>
+			<Word>elseif</Word>
+			<Word>if</Word>
+			<Word>in</Word>
+			<Word>data</Word>
+			<Word>class</Word>
+			<Word>using</Word>
+			<Word>function</Word>
 		</Keywords>
 		
-	
-		<!-- Mark previous rule-->
-		<Rule foreground="MidnightBlue" fontWeight="bold">
-			\$
-			[\w_]+(:[\w_]+)?	# a scoped identifier
-		|	{(\w\+:)\\\w\+}   # a 		
+		<Keywords color="ExceptionKeywords">
+			<Word>catch</Word>
+			<Word>finally</Word>
+			<Word>throw</Word>
+			<Word>trap</Word>
+			<Word>try</Word>
+		</Keywords>
+		
+		<Keywords color="GotoKeywords">
+			<Word>break</Word>
+			<Word>continue</Word>
+			<Word>return</Word>
+		</Keywords>
+		
+		<Keywords color="ReferenceTypes">
+			<Word>class</Word>
+		</Keywords>
+		
+		<Keywords color="Operators">
+			<Word>-not</Word>
+			<Word>-band</Word>
+			<Word>-bor</Word>
+			<Word>-replace</Word>
+			<Word>-ireplace</Word>
+			<Word>-creplace</Word>
+			<Word>-and</Word>
+			<Word>-or</Word>
+			<Word>-is</Word>
+			<Word>-isnot</Word>
+			<Word>-as</Word>
+			<Word>-lt</Word>
+			<Word>-le</Word>
+			<Word>-gt</Word>
+			<Word>-ge</Word>
+			<Word>-eq</Word>
+			<Word>-ne</Word>
+			<Word>-contains</Word>
+			<Word>-notcontains</Word>
+			<Word>-like</Word>
+			<Word>-notlike</Word>
+			<Word>-match</Word>
+			<Word>-notmatch</Word>
+		</Keywords>
+		
+		<Rule color="Variable">
+			\$[\d\w_]+
+		</Rule>
+		
+		<Rule color="Command">
+		[\w]+-[\w]+
 		</Rule>
 		
 		<!-- Digits -->
-		<Rule foreground="DarkBlue">
+		<Rule color="NumberLiteral">
 			\b0[xX][0-9a-fA-F]+  # hex number
-		|	\b
-			(	\d+(\.[0-9]+)?   #number with optional floating point
-			|	\.[0-9]+         #or just starting with floating point
+		|	
+			(	\b\d+(\.[0-9]+)?   #number with optional floating point
+			|	\.[0-9]+           #or just starting with floating point
 			)
 			([eE][+-]?[0-9]+)? # optional exponent
+		</Rule>
+		
+		<Rule color="Punctuation">
+			[?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
 		</Rule>
 	</RuleSet>
 </SyntaxDefinition>
