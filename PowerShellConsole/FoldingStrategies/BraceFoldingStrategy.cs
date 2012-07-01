@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using ICSharpCode.AvalonEdit.Document;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Document;
 
-namespace PowerShellConsole
+namespace PowerShellConsole.FoldingStrategies
 {
-    /// <summary>
-    /// Allows producing foldings from a document based on braces.
-    /// </summary>
     public class BraceFoldingStrategy : AbstractFoldingStrategy
     {
         /// <summary>

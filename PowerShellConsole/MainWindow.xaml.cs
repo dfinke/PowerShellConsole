@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Xml;
-using ICSharpCode.AvalonEdit.CodeCompletion;
+
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+
+using PowerShellConsole.Commands;
+using PowerShellConsole.FoldingStrategies;
+using PowerShellConsole.Utilities;
 
 namespace PowerShellConsole
 {
@@ -23,11 +25,12 @@ namespace PowerShellConsole
         PowerShell ps;
         AbstractFoldingStrategy foldingStrategy;
         FoldingManager foldingManager;
-        CompletionWindow completionWindow;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            ps = PowerShell.Create();
 
             textEditor.Focus();
             textEditor.TextArea.TextEntered += new TextCompositionEventHandler(TextArea_TextEntered);
@@ -39,8 +42,13 @@ namespace PowerShellConsole
 
             InstallFoldingStrategy();
             AddSyntaxHighlighting();
+            SetupInputHandlers();
+        }
 
-            ps = PowerShell.Create();
+        private void SetupInputHandlers()
+        {
+            var newBinding = new KeyBinding(new ControlSpacebarCommand(textEditor, ps), Key.Space, ModifierKeys.Control);
+            textEditor.TextArea.DefaultInputHandler.Editing.InputBindings.Add(newBinding);
         }
 
         private void InstallFoldingStrategy()
@@ -82,40 +90,9 @@ namespace PowerShellConsole
 
         void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
-
             if (e.Text.IndexOfAny(@"$-.:\".ToCharArray()) != -1)
             {
-                completionWindow = new CompletionWindow(textEditor.TextArea);
-
-                completionWindow.Closed += delegate
-                {
-                    completionWindow = null;
-                };
-
-                var data = completionWindow.CompletionList.CompletionData;
-
-                var h = new Hashtable();
-                //h["RelativeFilePaths"] = true;
-
-                var completedInput = CommandCompletion.CompleteInput(textEditor.Text, textEditor.TextArea.Caret.Offset, null, ps);
-
-                var records = completedInput.CompletionMatches;
-
-                (from record in records
-                 select new CompletionData
-                 {
-                     CompletionText = record.CompletionText,
-                     ToolTip = record.ToolTip,
-                     Resultype = record.ResultType,
-                     ReplacementLength = completedInput.ReplacementLength
-                 })
-                 .ToList()
-                 .ForEach(i => data.Add(i));
-
-                if (data.Count > 0)
-                {
-                    completionWindow.Show();
-                }
+                TextEditorUtilities.InvokeCompletionWindow(textEditor, ps);
             }
         }
     }
