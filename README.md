@@ -7,8 +7,7 @@ Here is what the console looks like.
 * Code folding
 * Syntax highlighting
 * Intellisense with *tooltips*
-  * Even at the .NET level
-    * Type System.
+  * Even at the .NET level, try typing **System.**
     * Check out $wc. **it too is doing code completion**
  
 
