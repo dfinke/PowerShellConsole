@@ -47,8 +47,25 @@ namespace PowerShellConsole
 
         private void SetupInputHandlers()
         {
-            var newBinding = new KeyBinding(new ControlSpacebarCommand(textEditor, ps), Key.Space, ModifierKeys.Control);
-            textEditor.TextArea.DefaultInputHandler.Editing.InputBindings.Add(newBinding);
+            AddF5();
+            AddCtrlSpacebar();
+        }
+
+        private void AddCtrlSpacebar()
+        {
+            var handleCtrlSpacebar = new KeyBinding(new ControlSpacebarCommand(textEditor, ps), Key.Space, ModifierKeys.Control);
+            AddKeyBinding(handleCtrlSpacebar);
+        }
+
+        private void AddF5()
+        {
+            KeyBinding handleF5 = new KeyBinding(new F5Command(textEditor, ps), new KeyGesture(Key.F5));
+            AddKeyBinding(handleF5);
+        }
+
+        private void AddKeyBinding(KeyBinding targetBinding)
+        {
+            textEditor.TextArea.DefaultInputHandler.Editing.InputBindings.Add(targetBinding);
         }
 
         private void InstallFoldingStrategy()
@@ -78,7 +95,7 @@ namespace PowerShellConsole
         {
             var foldingUpdateTimer = new DispatcherTimer();
 
-            foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2.5);
+            foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
             foldingUpdateTimer.Tick += new EventHandler(foldingUpdateTimer_Tick);
             foldingUpdateTimer.Start();
         }
