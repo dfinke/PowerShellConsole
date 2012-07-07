@@ -9,11 +9,11 @@ This can then be embedded into another C# application and poof, you've added scr
 * Intellisense with *tooltips*
     * Even at the .NET level, try typing **System.**
 
-![pic]       
-[pic]: http://dougfinke.com/powershellfordevelopers/powershellconsole.png
+![pic1]       
+[pic1]: http://dougfinke.com/powershellfordevelopers/powershellconsole.png
 
 ## Code completion 
 * .NET types
 
-![pic]       
-[pic]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletion.png
+![pic2]       
+[pic2]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletion.png
