@@ -1,16 +1,11 @@
 ﻿function test-this ($p) {
+	"Hello $p"
 }
 
-$x -ne 1
 $b = 'aasdf'; 
 $c = "aasdf"; 
 
-Get-Content 
-
-switch ('asdf') {
-    default {}
-}
-
-
-foreach ($a in $x) {
+$b = $true
+switch -parallel ($b) {
+	default {$_}
 }

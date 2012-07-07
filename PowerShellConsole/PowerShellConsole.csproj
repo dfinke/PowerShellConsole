@@ -63,6 +63,8 @@
     <Compile Include="Commands\ControlSpacebarCommand.cs" />
     <Compile Include="Commands\F5Command.cs" />
     <Compile Include="FoldingStrategies\BraceFoldingStrategy.cs" />
+    <Compile Include="ITextMarker.cs" />
+    <Compile Include="TextMarkerService.cs" />
     <Compile Include="Utilities\TextEditorUtilities.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,16 +1,21 @@
-﻿using System;
+﻿// http://www.opensourcejavaphp.net/csharp/sharpdevelop/CodeEditor.cs.html
+
+using System;
 using System.IO;
 using System.Management.Automation;
+using System.Management.Automation.Language;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
-
+using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-
+using ICSharpCode.SharpDevelop.Editor;
 using PowerShellConsole.Commands;
 using PowerShellConsole.FoldingStrategies;
 using PowerShellConsole.Utilities;
@@ -25,6 +30,8 @@ namespace PowerShellConsole
         PowerShell ps;
         AbstractFoldingStrategy foldingStrategy;
         FoldingManager foldingManager;
+        TextMarkerService textMarkerService;
+        ToolTip toolTip;
 
         public MainWindow()
         {
@@ -33,7 +40,13 @@ namespace PowerShellConsole
             ps = PowerShell.Create();
 
             textEditor.Focus();
+
+            textEditor.TextArea.PreviewKeyUp += new KeyEventHandler(TextArea_PreviewKeyUp);
             textEditor.TextArea.TextEntered += new TextCompositionEventHandler(TextArea_TextEntered);
+
+            textEditor.MouseHover += new MouseEventHandler(textEditor_MouseHover);
+            textEditor.MouseHoverStopped += new MouseEventHandler(textEditor_MouseHoverStopped);
+
             textEditor.ShowLineNumbers = true;
 
             //textEditor.TextArea.TextView.LineTransformers.Add(new TransfromFunctionKeyword());
@@ -43,6 +56,16 @@ namespace PowerShellConsole
             InstallFoldingStrategy();
             AddSyntaxHighlighting();
             SetupInputHandlers();
+            SetupMarkerService();
+        }
+
+        private void SetupMarkerService()
+        {
+            textMarkerService = new TextMarkerService(this.textEditor.Document);
+            textEditor.TextArea.TextView.BackgroundRenderers.Add(textMarkerService);
+            var textView = textEditor.TextArea.TextView;
+            textView.LineTransformers.Add(textMarkerService);
+            textView.Services.AddService(typeof(ITextMarkerService), textMarkerService);
         }
 
         private void SetupInputHandlers()
@@ -79,11 +102,11 @@ namespace PowerShellConsole
 
         private void AddSyntaxHighlighting()
         {
-            using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerShellConsole.PowerShell.xshd"))
+            using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerShellConsole.PowerShell.xshd"))
             {
                 if (s != null)
                 {
-                    using (XmlTextReader reader = new XmlTextReader(s))
+                    using (var reader = new XmlTextReader(s))
                     {
                         textEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                     }
@@ -107,11 +130,69 @@ namespace PowerShellConsole
 
         void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
+
             if (e.Text.IndexOfAny(@"$-.:\".ToCharArray()) != -1)
             {
                 TextEditorUtilities.InvokeCompletionWindow(textEditor, ps);
             }
         }
+
+        void TextArea_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            TestForSyntaxErrors();
+        }
+
+        private void TestForSyntaxErrors()
+        {
+            textMarkerService.RemoveAll();
+            var script = textEditor.TextArea.TextView.Document.Text;
+
+            Token[] token;
+            ParseError[] errors;
+            var ast = Parser.ParseInput(script, out token, out errors);
+
+            foreach (var item in errors)
+            {
+                var startOffset = item.Extent.StartOffset;
+                var endOffset = item.Extent.EndOffset;
+                var toolTip = item.Message;
+                var length = endOffset - startOffset;
+                var m = textMarkerService.Create(startOffset, length);
+
+                m.MarkerType = TextMarkerType.SquigglyUnderline;
+                m.MarkerColor = Colors.Red;
+                m.ToolTip = toolTip;
+            }
+        }
+
+        void textEditor_MouseHover(object sender, MouseEventArgs e)
+        {
+            var textView = textEditor.TextArea.TextView;
+            var textMarkerService = textView.Services.GetService(typeof(ITextMarkerService)) as ITextMarkerService;
+            if (textMarkerService != null)
+            {
+                foreach (var textMarker in textMarkerService.TextMarkers)
+                {
+                    if (toolTip == null)
+                    {
+                        toolTip = new ToolTip();
+                    }
+
+                    toolTip.Content = textMarker.ToolTip;
+                    toolTip.IsOpen = true;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        void textEditor_MouseHoverStopped(object sender, MouseEventArgs e)
+        {
+            if (toolTip != null)
+            {
+                toolTip.IsOpen = false;
+            }
+        }
+
     }
 
     //public class TransfromFunctionKeyword : DocumentColorizingTransformer
