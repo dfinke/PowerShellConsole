@@ -12,6 +12,7 @@ This can then be embedded into another C# application and poof, you've added scr
 ![pic]       
 [pic]: http://dougfinke.com/powershellfordevelopers/powershellconsole.png
 
-* Code completion with .NET types
+## Code completion 
+* .NET types
 ![pic]       
 [pic]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletion.png
