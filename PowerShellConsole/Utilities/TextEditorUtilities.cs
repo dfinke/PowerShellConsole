@@ -9,7 +9,7 @@ namespace PowerShellConsole.Utilities
     {
         static CompletionWindow completionWindow;
 
-        public static void InvokeCompletionWindow(TextEditor textEditor, PowerShell ps)
+        public static void InvokeCompletionWindow(TextEditor textEditor)
         {
             completionWindow = new CompletionWindow(textEditor.TextArea);
 
@@ -21,7 +21,7 @@ namespace PowerShellConsole.Utilities
             var text = textEditor.Text;
             var offset = textEditor.TextArea.Caret.Offset;
 
-            var completedInput = CommandCompletion.CompleteInput(text, offset, null, ps);
+            var completedInput = CommandCompletion.CompleteInput(text, offset, null, PSConsolePowerShell.PowerShellInstance);
             var r = CommandCompletion.MapStringInputToParsedInput(text, offset);
 
             if (completedInput.CompletionMatches.Count > 0)

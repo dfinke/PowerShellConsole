@@ -1,7 +1,7 @@
 ﻿// http://www.opensourcejavaphp.net/csharp/sharpdevelop/CodeEditor.cs.html
 
 using System;
-using System.Management.Automation;
+using System.Diagnostics;
 using System.Management.Automation.Language;
 using System.Reflection;
 using System.Windows;
@@ -18,7 +18,6 @@ using ICSharpCode.SharpDevelop.Editor;
 using PowerShellConsole.Commands;
 using PowerShellConsole.FoldingStrategies;
 using PowerShellConsole.Utilities;
-using System.Diagnostics;
 
 namespace PowerShellConsole
 {
@@ -27,7 +26,6 @@ namespace PowerShellConsole
     /// </summary>
     public partial class MainWindow : Window
     {
-        PowerShell ps;
         AbstractFoldingStrategy foldingStrategy;
         FoldingManager foldingManager;
         TextMarkerService textMarkerService;
@@ -36,8 +34,6 @@ namespace PowerShellConsole
         public MainWindow()
         {
             InitializeComponent();
-
-            ps = PowerShell.Create();
 
             textEditor.Focus();
 
@@ -58,6 +54,8 @@ namespace PowerShellConsole
             SetupInputHandlers();
             SetupMarkerService();
             TestForSyntaxErrors();
+
+            PSConsolePowerShell.PSConsoleRunspace.SessionStateProxy.SetVariable("tse", this);
         }
 
         private void SetupMarkerService()
@@ -77,13 +75,13 @@ namespace PowerShellConsole
 
         private void AddCtrlSpacebar()
         {
-            var handleCtrlSpacebar = new KeyBinding(new ControlSpacebarCommand(textEditor, ps), Key.Space, ModifierKeys.Control);
+            var handleCtrlSpacebar = new KeyBinding(new ControlSpacebarCommand(textEditor), Key.Space, ModifierKeys.Control);
             AddKeyBinding(handleCtrlSpacebar);
         }
 
         private void AddF5()
         {
-            KeyBinding handleF5 = new KeyBinding(new F5Command(textEditor, ps), new KeyGesture(Key.F5));
+            KeyBinding handleF5 = new KeyBinding(new F5Command(textEditor), new KeyGesture(Key.F5));
             AddKeyBinding(handleF5);
         }
 
@@ -131,10 +129,9 @@ namespace PowerShellConsole
 
         void TextArea_TextEntered(object sender, TextCompositionEventArgs e)
         {
-
             if (e.Text.IndexOfAny(@"$-.:\".ToCharArray()) != -1)
             {
-                TextEditorUtilities.InvokeCompletionWindow(textEditor, ps);
+                TextEditorUtilities.InvokeCompletionWindow(textEditor);
             }
         }
 
@@ -155,7 +152,7 @@ namespace PowerShellConsole
                         e.Key == Key.Left ||
                         e.Key == Key.Right ||
                         e.Key == Key.RightCtrl ||
-                        e.Key == Key.LeftCtrl                        
+                        e.Key == Key.LeftCtrl
                         ) return;
             }
 

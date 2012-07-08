@@ -11,22 +11,15 @@ namespace PowerShellConsole.Commands
         public event EventHandler CanExecuteChanged;
 
         private TextEditor textEditor;
-        private PowerShell powerShell;
 
-        public ControlSpacebarCommand(TextEditor textEditor, PowerShell powerShell)
+        public ControlSpacebarCommand(TextEditor textEditor)
         {
             if (textEditor == null)
             {
                 throw new ArgumentNullException("textEditor in ControlSpaceBarCommand ctor");
             }
 
-            if (powerShell == null)
-            {
-                throw new ArgumentNullException("powerShell in ControlSpaceBarCommand ctor");
-            }
-
             this.textEditor = textEditor;
-            this.powerShell = powerShell;
         }
 
         public bool CanExecute(object parameter)
@@ -35,8 +28,8 @@ namespace PowerShellConsole.Commands
         }
 
         public void Execute(object parameter)
-        {
-            TextEditorUtilities.InvokeCompletionWindow(textEditor, powerShell);
+        {            
+            TextEditorUtilities.InvokeCompletionWindow(textEditor);
         }
     }
 }
