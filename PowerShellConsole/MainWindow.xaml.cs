@@ -1,7 +1,6 @@
 ﻿// http://www.opensourcejavaphp.net/csharp/sharpdevelop/CodeEditor.cs.html
 
 using System;
-using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Reflection;
@@ -19,6 +18,7 @@ using ICSharpCode.SharpDevelop.Editor;
 using PowerShellConsole.Commands;
 using PowerShellConsole.FoldingStrategies;
 using PowerShellConsole.Utilities;
+using System.Diagnostics;
 
 namespace PowerShellConsole
 {
@@ -57,6 +57,7 @@ namespace PowerShellConsole
             AddSyntaxHighlighting();
             SetupInputHandlers();
             SetupMarkerService();
+            TestForSyntaxErrors();
         }
 
         private void SetupMarkerService()
@@ -139,6 +140,30 @@ namespace PowerShellConsole
 
         void TextArea_PreviewKeyUp(object sender, KeyEventArgs e)
         {
+            if (
+                e.KeyboardDevice.Modifiers == ModifierKeys.Control ||
+                e.KeyboardDevice.Modifiers == ModifierKeys.None ||
+                e.KeyboardDevice.Modifiers == ModifierKeys.Shift
+                )
+            {
+                if (e.Key == Key.Down ||
+                        e.Key == Key.Up ||
+                        e.Key == Key.PageDown ||
+                        e.Key == Key.PageUp ||
+                        e.Key == Key.Home ||
+                        e.Key == Key.End ||
+                        e.Key == Key.Left ||
+                        e.Key == Key.Right ||
+                        e.Key == Key.RightCtrl ||
+                        e.Key == Key.LeftCtrl                        
+                        ) return;
+            }
+
+            // don't check for syntax errors 
+            // if any of those keys were pressed
+            var msg = string.Format("PreviewKeyUp: {0} {1}", e.KeyboardDevice.Modifiers, e.Key);
+            Debug.WriteLine(msg);
+
             TestForSyntaxErrors();
         }
 
