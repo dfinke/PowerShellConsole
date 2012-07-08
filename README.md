@@ -17,3 +17,7 @@ This can then be embedded into another C# application and poof, you've added scr
 
 ![pic2]       
 [pic2]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletion.png
+
+* Even code complets .NET types compile on the fly
+![pic3]       
+[pic3]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletionOnTheFly.png
