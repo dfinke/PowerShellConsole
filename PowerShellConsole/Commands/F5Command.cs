@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Management.Automation;
 using System.Windows.Input;
 using ICSharpCode.AvalonEdit;
-using PowerShellConsole.Utilities;
 
 namespace PowerShellConsole.Commands
 {
@@ -36,7 +36,14 @@ namespace PowerShellConsole.Commands
 
         public void Execute(object parameter)
         {
-            Console.WriteLine();
+            powerShell
+                .AddScript(textEditor.Text)
+                .AddCommand("Out-String");
+
+            foreach (var item in powerShell.Invoke())
+            {
+                Debug.WriteLine(item);
+            }
         }
     }
 }
