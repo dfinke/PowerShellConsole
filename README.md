@@ -13,12 +13,12 @@ This can then be embedded into another C# application and poof, you've added scr
 [pic1]: http://dougfinke.com/powershellfordevelopers/powershellconsole.png
 
 ## Code completion 
-* .NET types
+### .NET types
 
 ![pic2]       
 [pic2]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletion.png
 
-* .NET types compiled on the fly
+### .NET types compiled on the fly
 
 ![pic3]       
 [pic3]: http://dougfinke.com/powershellfordevelopers/PowerShellConsoleCodeCompletionOnTheFly.png
