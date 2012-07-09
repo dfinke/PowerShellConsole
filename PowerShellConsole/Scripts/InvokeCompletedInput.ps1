@@ -1,0 +1,3 @@
+﻿param($stuff)
+
+$stuff | gm

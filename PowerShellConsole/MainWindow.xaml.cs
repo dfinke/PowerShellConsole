@@ -55,13 +55,22 @@ namespace PowerShellConsole
             SetupMarkerService();
             TestForSyntaxErrors();
 
-            PSConsolePowerShell.PSConsoleRunspace.SessionStateProxy.SetVariable("tse", this);
+            PSConsolePowerShell.SetVariable("tse", this);
+            PSConsolePowerShell.SetVariable("textEditor", this.textEditor);
+
+            //ApplicationExtensionPoints
+            //    .ApplicationExtensionPointsInstance
+            //    .InvokeInitializeConsole
+            //    .ExecuteScriptEntryPoint();
+
+            "InvokeInitializeConsole".ExecuteScriptEntryPoint();
         }
 
         private void SetupMarkerService()
         {
             textMarkerService = new TextMarkerService(this.textEditor.Document);
             textEditor.TextArea.TextView.BackgroundRenderers.Add(textMarkerService);
+
             var textView = textEditor.TextArea.TextView;
             textView.LineTransformers.Add(textMarkerService);
             textView.Services.AddService(typeof(ITextMarkerService), textMarkerService);

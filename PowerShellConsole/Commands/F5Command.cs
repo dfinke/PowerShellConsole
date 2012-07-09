@@ -28,8 +28,8 @@ namespace PowerShellConsole.Commands
 
         public void Execute(object parameter)
         {
-            ScriptEntryPoints
-                .ScriptEntryPointsInstance
+            ApplicationExtensionPoints
+                .ApplicationExtensionPointsInstance
                 .InvokeCurrentScript
                 .ExecuteScriptEntryPoint();
 

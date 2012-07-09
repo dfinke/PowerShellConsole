@@ -20,7 +20,7 @@
             {
                 if (powerShell == null)
                 {
-                    PSConsoleRunspace.SessionStateProxy.SetVariable("sep", ScriptEntryPoints.ScriptEntryPointsInstance);
+                    PSConsoleRunspace.SessionStateProxy.SetVariable("sep", ApplicationExtensionPoints.ApplicationExtensionPointsInstance);
 
                     powerShell = PowerShell.Create();
                     powerShell.Runspace = PSConsoleRunspace;
@@ -48,7 +48,7 @@
         public static Collection<PSObject> ExecutePS(this string script)
         {
             return PowerShellInstance
-                .AddScript(script)
+                .AddScript(script)       
                 .AddCommand("Out-String")
                 .Invoke();
         }
@@ -57,9 +57,8 @@
         {
             foreach (var file in GetScriptsToRun(scriptEntryPoint))
             {
-                var scriptToRun = ". " + file;
-
-                foreach (var item in scriptToRun.ExecutePS())
+                var scriptToRun = string.Format(". {0}", file);
+                foreach (var item in scriptToRun.ExecutePS()) 
                 {
                     Debug.WriteLine(item);
                 }
@@ -86,6 +85,11 @@
             var path = Path.GetDirectoryName(location);
 
             return Path.Combine(path, "scripts");
+        }
+
+        public static void SetVariable(string name, object value)
+        {
+            PSConsoleRunspace.SessionStateProxy.SetVariable(name, value);
         }
     }
 }

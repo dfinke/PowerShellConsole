@@ -65,7 +65,7 @@
     <Compile Include="FoldingStrategies\BraceFoldingStrategy.cs" />
     <Compile Include="ITextMarker.cs" />
     <Compile Include="PSConsolePowerShell.cs" />
-    <Compile Include="ScriptEntryPoints.cs" />
+    <Compile Include="ApplicationExtensionPoints.cs" />
     <Compile Include="TextMarkerService.cs" />
     <Compile Include="Utilities\TextEditorUtilities.cs" />
     <Page Include="MainWindow.xaml">
@@ -108,6 +108,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Scripts\InvokeCompletedInput.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\InvokeInitializeConsole.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\InvokeCurrentScriptTest.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

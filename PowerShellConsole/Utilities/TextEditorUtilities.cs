@@ -22,7 +22,9 @@ namespace PowerShellConsole.Utilities
             var offset = textEditor.TextArea.Caret.Offset;
 
             var completedInput = CommandCompletion.CompleteInput(text, offset, null, PSConsolePowerShell.PowerShellInstance);
-            var r = CommandCompletion.MapStringInputToParsedInput(text, offset);
+            // var r = CommandCompletion.MapStringInputToParsedInput(text, offset);
+            
+            "InvokeCompletedInput".ExecuteScriptEntryPoint();
 
             if (completedInput.CompletionMatches.Count > 0)
             {
