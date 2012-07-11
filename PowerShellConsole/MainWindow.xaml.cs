@@ -63,7 +63,7 @@ namespace PowerShellConsole
             //    .InvokeInitializeConsole
             //    .ExecuteScriptEntryPoint();
 
-            "InvokeInitializeConsole".ExecuteScriptEntryPoint();
+            "InvokeInitializeConsole".ExecuteScriptEntryPoint(this);
         }
 
         private void SetupMarkerService()

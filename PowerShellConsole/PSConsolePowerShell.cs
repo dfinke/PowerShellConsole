@@ -8,6 +8,7 @@
     using System.Management.Automation;
     using System.Management.Automation.Runspaces;
     using System.Reflection;
+    using System;
 
     public static class PSConsolePowerShell
     {
@@ -48,17 +49,22 @@
         public static Collection<PSObject> ExecutePS(this string script)
         {
             return PowerShellInstance
-                .AddScript(script)       
+                .AddScript(script)
                 .AddCommand("Out-String")
                 .Invoke();
         }
 
-        public static void ExecuteScriptEntryPoint(this string scriptEntryPoint)
+        public static void ExecuteScriptEntryPoint(this string scriptEntryPoint, object argument = null)
         {
             foreach (var file in GetScriptsToRun(scriptEntryPoint))
             {
-                var scriptToRun = string.Format(". {0}", file);
-                foreach (var item in scriptToRun.ExecutePS()) 
+                var results = PowerShellInstance
+                    .AddCommand(file)
+                    .AddParameter("stuff", argument)
+                    .AddCommand("Out-String")
+                    .Invoke();
+
+                foreach (var item in results)
                 {
                     Debug.WriteLine(item);
                 }

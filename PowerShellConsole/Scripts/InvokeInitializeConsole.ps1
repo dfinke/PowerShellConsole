@@ -1,5 +1,6 @@
 ﻿param($stuff)
 
-$tse.Title = "[Ready] $(Get-Date)"
-
-$tse.TextEditor
+$stuff
+#$tse.Title = $stuff.ToString()
+#$tse.Title = "[Ready] $(Get-Date)"
+#$tse.TextEditor

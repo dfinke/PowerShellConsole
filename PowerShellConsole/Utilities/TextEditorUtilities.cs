@@ -24,7 +24,7 @@ namespace PowerShellConsole.Utilities
             var completedInput = CommandCompletion.CompleteInput(text, offset, null, PSConsolePowerShell.PowerShellInstance);
             // var r = CommandCompletion.MapStringInputToParsedInput(text, offset);
             
-            "InvokeCompletedInput".ExecuteScriptEntryPoint();
+            "InvokeCompletedInput".ExecuteScriptEntryPoint(completedInput.CompletionMatches);
 
             if (completedInput.CompletionMatches.Count > 0)
             {
