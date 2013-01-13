@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("PowerShellConsole")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Doug Finke")]
 [assembly: AssemblyProduct("PowerShellConsole")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
+[assembly: AssemblyCopyright("Copyright © Doug Finke 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
